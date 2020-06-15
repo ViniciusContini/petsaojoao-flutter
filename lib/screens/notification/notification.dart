@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:petsaojoao/screens/splash_screen/splash_screen.dart';
 import 'package:petsaojoao/screens/notification/pet_found/pet_found_board.dart';
 import 'package:petsaojoao/screens/login/login.dart';
-import 'package:petsaojoao/screens/dashboard/dashboard.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'dart:async';
 
