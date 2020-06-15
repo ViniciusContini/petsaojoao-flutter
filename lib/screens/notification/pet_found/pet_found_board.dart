@@ -3,6 +3,8 @@ import 'carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:petsaojoao/models/back_pet_found/buttom_functions.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class PetFoundBoard extends StatefulWidget {
   String valor;
@@ -17,7 +19,7 @@ class _PetFoundBoardState extends State<PetFoundBoard> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.only(top: 10.0, left: 15.0, right: 15.0),
+        padding: EdgeInsets.only(top: 0.0, left: 15.0, right: 15.0),
         child: ListView(
           children: <Widget>[
             CarouselWithIndicatorDemo(),
@@ -40,9 +42,26 @@ class InfoPetFoundBoard extends StatefulWidget {
 }
 
 class _InfoPetFoundBoardState extends State<InfoPetFoundBoard> {
-  String date = "";
-  String hour = "";
-  String name = "";
+  void _recuperarDados(id) async{
+  String url = "localhost:3000/found/${id}";
+  http.Response response = await http.get(url);
+
+  Map<String, dynamic> retorno = json.decode( response.body );
+  String tutor_id = retorno["tutor_id"].toString();
+  String anonymous = retorno["anonymous"].toString();
+  String lat = retorno["lat"].toString();
+  String lng = retorno["lng"].toString();
+  String note = retorno["note"].toString();
+  String createdAt = retorno["createdAt"].toString();
+  String updatedAt = retorno["updatedAt"].toString();
+
+  String url1 = "localhost:3000/tutors/${tutor_id}";
+  http.Response response1 = await http.get(url);
+
+  Map<String, dynamic> retorno1 = json.decode( response.body );
+  String tutor_name = retorno1["tutor_name"].toString();
+
+  }
 
   final _labelPetFoundBoard = "Pet encontrado";
   final _fontFamilyRoboto = 'Roboto';
@@ -65,7 +84,7 @@ class _InfoPetFoundBoardState extends State<InfoPetFoundBoard> {
             SizedBox(
               width: 10,
             ),
-            Text("dia: ${date} Hora: ${hour}"),
+            Text("dia: Hora: "),
           ],
         ),
         SizedBox(
