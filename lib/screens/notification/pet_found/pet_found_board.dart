@@ -5,6 +5,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:petsaojoao/models/back_pet_found/buttom_functions.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:map_launcher/map_launcher.dart';
 
 class PetFoundBoard extends StatefulWidget {
   String valor;
@@ -163,6 +164,46 @@ class ThisYourPet extends StatefulWidget {
 }
 
 class _ThisYourPetState extends State<ThisYourPet> {
+  openMapsSheet(context) async {
+    try {
+      final title = "PetSaoJoao";
+      final description = "Sao joao da Boa Vista";
+      final coords = Coords(-21.9663455, -46.8670338);
+      final availableMaps = await MapLauncher.installedMaps;
+
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return SafeArea(
+            child: SingleChildScrollView(
+              child: Container(
+                child: Wrap(
+                  children: <Widget>[
+                    for (var map in availableMaps)
+                      ListTile(
+                        onTap: () => map.showMarker(
+                          coords: coords,
+                          title: title,
+                          description: description,
+                        ),
+                        title: Text(map.mapName),
+                        leading: Image(
+                          image: map.icon,
+                          height: 30.0,
+                          width: 30.0,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
   final _fontFamilyRoboto = 'Roboto';
   final _labelThisPet = "ESTE PET É SEU?";
   final _labelNegative = "NÃO";
@@ -203,7 +244,7 @@ class _ThisYourPetState extends State<ThisYourPet> {
               textColor: Colors.white,
               icon: Icon(Icons.location_on),
               color: Colors.blueAccent,
-              onPressed: () {},
+              onPressed: () => openMapsSheet(context),
               label: Padding(
                 padding: EdgeInsets.all(10.0),
                 child: Text(
